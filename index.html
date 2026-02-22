@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AstalaVista</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a1f;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(to bottom, #220044, #000033);
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 2px solid #ff0066;
+            box-shadow: 0 2px 10px rgba(255,0,102,0.3);
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px 5px;
+            background: #111133;
+            gap: 8px;
+        }
+        .tab {
+            background: #222255;
+            color: #dddddd;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            background: #333366;
+            transform: scale(1.05);
+        }
+        .tab.active {
+            background: #ff0066;
+            color: white;
+            font-weight: bold;
+        }
+        .filter-btn {
+            background: #ff3333;
+            color: white;
+            text-align: center;
+            margin: 15px 15px 5px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(255,51,51,0.5);
+            transition: all 0.3s;
+        }
+        .filter-btn:hover {
+            background: #ff4d4d;
+            transform: scale(1.02);
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 12px;
+            padding: 10px 15px;
+        }
+        .card {
+            background: #1a1a3a;
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 16px rgba(255,0,102,0.2);
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #ff0066;
+        }
+        .info {
+            padding: 10px;
+        }
+        .name {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 6px 0 4px;
+        }
+        .params {
+            font-size: 13px;
+            color: #aaaaaa;
+            line-height: 1.4;
+        }
+        .price {
+            background: #ff3333;
+            color: white;
+            margin: 10px 8px 6px;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            margin: 6px 0;
+        }
+        .tag {
+            background: #333366;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+        /* Модалка фильтра */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #1a1a3a;
+            padding: 20px;
+            border-radius: 12px;
+            width: 80%;
+
+
+max-width: 400px;
+            text-align: center;
+        }
+        .modal-content input {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #222255;
+            color: white;
+        }
+        .modal-content button {
+            background: #ff0066;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<header>AstalaVista</header>
+
+<div class="tabs" id="tabs">
+    <div class="tab active" data-cat="all">Все</div>
+    <div class="tab" data-cat="ind">Индивидуалки</div>
+    <div class="tab" data-cat="mass">Массаж</div>
+    <div class="tab" data-cat="bdsm">BDSM</div>
+    <div class="tab" data-cat="elit">Элитные</div>
+</div>
+
+<div class="filter-btn" id="filterBtn">ПОКАЗАТЬ ФИЛЬТР ▼</div>
+
+<div class="cards" id="cards"></div>
+
+<!-- Модалка фильтра -->
+<div id="filterModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Фильтры</h2>
+        <input type="number" id="minAge" placeholder="Возраст от">
+        <input type="number" id="maxAge" placeholder="Возраст до">
+        <input type="number" id="minPrice" placeholder="Цена от">
+        <input type="number" id="maxPrice" placeholder="Цена до">
+        <button id="applyFilter">Применить</button>
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    // Анкеты для примера
+    const girls = [
+        {
+            name: "Крис",
+            age: 30,
+            height: 164,
+            weight: 54,
+            breast: 1,
+            location: "Москва, Митино",
+            price1: 12000,
+            price2: 16000,
+            tags: ["МБР", "Целуюсь", "Выезд"],
+            photo: "https://via.placeholder.com/300x400/ff0066/ffffff?text=Крис",
+            category: "ind"
+        },
+        {
+            name: "Оливия",
+            age: 31,
+            height: 175,
+            weight: 59,
+            breast: 4,
+            location: "Москва, Савеловская",
+            price1: 18000,
+            price2: 36000,
+            tags: ["МБР", "Целуюсь", "Выезд", "Апартаменты"],
+            photo: "https://via.placeholder.com/300x400/ff0066/ffffff?text=Оливия",
+            category: "elit"
+        },
+        {
+            name: "Аня",
+            age: 25,
+            height: 170,
+            weight: 55,
+            breast: 3,
+            location: "Москва, Центр",
+            price1: 15000,
+            price2: 30000,
+            tags: ["BDSM", "Массаж", "Экстрим"],
+            photo: "https://via.placeholder.com/300x400/ff0066/ffffff?text=Аня",
+            category: "bdsm"
+        },
+        {
+            name: "Мария",
+            age: 28,
+            height: 168,
+            weight: 52,
+            breast: 2,
+            location: "Москва, Юг",
+            price1: 10000,
+            price2: 20000,
+            tags: ["Массаж", "Расслабление", "Выезд"],
+            photo: "https://via.placeholder.com/300x400/ff0066/ffffff?text=Мария",
+            category: "mass"
+        }
+    ];
+
+    let currentCategory = 'all';
+    let filters = { minAge: null, maxAge: null, minPrice: null, maxPrice: null };
+
+    const cardsContainer = document.getElementById('cards');
+    const tabs = document.querySelectorAll('.tab');
+    const filterBtn = document.getElementById('filterBtn');
+    const modal = document.getElementById('filterModal');
+    const closeModal = document.getElementById('closeModal');
+    const applyFilter = document.getElementById('applyFilter');
+
+    function applyFilters(data) {
+        return data.filter(girl => {
+            const ageMatch = (!f
+
+
+ilters.minAge || girl.age >= filters.minAge) && (!filters.maxAge || girl.age <= filters.maxAge);
+            const priceMatch = (!filters.minPrice || girl.price1 >= filters.minPrice) && (!filters.maxPrice || girl.price1 <= filters.maxPrice);
+            const catMatch = currentCategory === 'all' || girl.category === currentCategory;
+            return ageMatch && priceMatch && catMatch;
+        });
+    }
+
+    function renderCards() {
+        const filtered = applyFilters(girls);
+        cardsContainer.innerHTML = '';
+        filtered.forEach(girl => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="\( {girl.photo}" alt=" \){girl.name}">
+                <div class="info">
+                    <div class="name">${girl.name}</div>
+                    <div class="params">
+                        Грудь: ${girl.breast}
+
+                        Рост: ${girl.height} | Вес: ${girl.weight}
+
+                        Возраст: ${girl.age}
+                    </div>
+                    <div class="location">${girl.location}</div>
+                    <div class="price">${girl.price1} ₽ / ${girl.price2} ₽</div>
+                    <div class="tags">
+                        \( {girl.tags.map(tag => `<span class="tag"> \){tag}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            cardsContainer.appendChild(card);
+        });
+    }
+
+    // Клик по табам
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentCategory = tab.dataset.cat;
+            renderCards();
+        });
+    });
+
+    // Модалка фильтра
+    filterBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    applyFilter.addEventListener('click', () => {
+        filters.minAge = parseInt(document.getElementById('minAge').value) || null;
+        filters.maxAge = parseInt(document.getElementById('maxAge').value) || null;
+        filters.minPrice = parseInt(document.getElementById('minPrice').value) || null;
+        filters.maxPrice = parseInt(document.getElementById('maxPrice').value) || null;
+        modal.style.display = 'none';
+        renderCards();
+    });
+
+    // Начальный рендер
+    renderCards();
+
+    // MainButton
+    tg.MainButton.setText("Написать в поддержку");
+    tg.MainButton.setParams({ color: "#ff0066", text_color: "#ffffff" });
+    tg.MainButton.show();
+    tg.MainButton.onClick(() => tg.showAlert("Пиши @твой_ник"));
+</script>
+
+</body>
+</html>
