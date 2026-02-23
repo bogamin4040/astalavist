@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstalaVista</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0d001a;
+            color: #e0e0ff;
+            min-height: 100vh;
+        }
+
+        /* Предупреждение 18+ */
+        #ageWarning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+
+        #ageWarning h1 {
+            font-size: 32px;
+            color: #d9ccff;
+            margin-bottom: 30px;
+        }
+
+        #ageBtn {
+            background: #ab47bc;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 0;
+            width: 80%;
+            max-width: 320px;
+        }
+
+        #noShow {
+            margin-top: 20px;
+            color: #ccc;
+            font-size: 15px;
+        }
+
+        #noShow input {
+            margin-right: 10px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        /* Основной контент */
+        #mainContent {
+            display: none;
+            min-height: 100vh;
+            background: #0d001a;
+        }
+
+        .top-bar {
+            background: #140033;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #4a148c;
+        }
+
+        .top-bar .title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #d9ccff;
+        }
+
+        .top-bar .icon {
+            font-size: 24px;
+            color: #d0c0ff;
+            cursor: pointer;
+        }
+
+        .subtitle {
+            padding: 12px 16px;
+            font-size: 18px;
+            background: #1e004d;
+            text-align: center;
+            border-bottom: 1px solid #512da8;
+        }
+
+        .filter-btn {
+            background: #ab47bc;
+            color: white;
+            padding: 12px;
+            margin: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .content {
+            padding: 15px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background: #1e004d;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #512da8;
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .info {
+            padding: 12px;
+        }
+
+        .name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #d9ccff;
+            margin-bottom: 5px;
+        }
+
+        .params {
+            font-size: 13px;
+            color: #b3aaff;
+            line-height: 1.5;
+        }
+
+        .location {
+            font-size: 12px;
+            color: #9575cd;
+            margin: 8px 0;
+        }
+
+        .price {
+            background: #ab47bc;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tag {
+            background: #2a004d;
+            border: 1px solid #512da8;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 11px;
+            color: #b388ff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 18+ предупреждение -->
+<div id="ageWarning">
+    <h1>⚠️ Внимание! Контент 18+</h1>
+    <button id="ageBtn">Да, мне есть 18 лет</button>
+    <label id="noShow">
+        <input type="checkbox" id="noShowCheckbox"> Больше не показывать
+    </label>
+</div>
+
+<!-- Основной контент -->
+<div id="mainContent">
+    <div class="top-bar">
+        <span class="icon">🔍</span>
+        <span class="title">AstalaVista</span>
+        <span class="icon">≡</span>
+    </div>
+    
+    <div class="subtitle">Девушки Москвы</div>
+    
+    <div class="filter-btn">ПОКАЗАТЬ ФИЛЬТР ▼</div>
+    
+    <div class="content">
+        <div class="cards" id="cards"></div>
+    </div>
+</div>
+
+<script>
+    // Данные девушек
+    const girls = [
+        { name: "Крис", age: 30, height: 164, weight: 54, breast: 1, location: "Москва, Митино", price1: 12000, price2: 16000, tags: ["МБР", "Целуюсь", "Выезд"] },
+        { name: "Оливия", age: 31, height: 175, weight: 59, breast: 4, location: "Москва, Савеловская", price1: 18000, price2: 36000, tags: ["МБР", "Выезд", "VIP"] },
+        { name: "Аня", age: 25, height: 170, weight: 55, breast: 3, location: "Москва, Центр", price1: 15000, price2: 30000, tags: ["BDSM", "Массаж", "Апартаменты"] },
+        { name: "Мария", age: 28, height: 168, weight: 52, breast: 2, location: "Москва, Юг", price1: 10000, price2: 20000, tags: ["Массаж", "Расслабление"] },
+        { name: "София", age: 27, height: 172, weight: 56, breast: 3, location: "Москва, Арбат", price1: 22000, price2: 45000, tags: ["Элитные", "VIP", "Выезд"] },
+        { name: "Катя", age: 29, height: 166, weight: 53, breast: 2, location: "Москва, Тверская", price1: 14000, price2: 28000, tags: ["Индивидуалки", "МБР"] }
+    ];
+
+    // Получаем элементы
+    const ageWarning = document.getElementById('ageWarning');
+    const mainContent = document.getElementById('mainContent');
+    const ageBtn = document.getElementById('ageBtn');
+    const noShowCheckbox = document.getElementById('noShowCheckbox');
+    const cardsContainer = document.getElementById('cards');
+
+    // Функция отрисовки карточек
+    function renderCards() {
+        cardsContainer.innerHTML = '';
+        
+        girls.forEach(girl => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            card.innerHTML = `
+                <img src="https://via.placeholder.com/300x400/4a148c/ffffff?text=${girl.name}" alt="${girl.name}">
+                <div class="info">
+                    <div class="name">${girl.name}</div>
+                    <div class="params">
+                        🎂 ${girl.age} лет<br>
+                        📏 ${girl.height} см | ${girl.weight} кг<br>
+                        💋 Грудь: ${girl.breast}
+                    </div>
+                    <div class="location">📍 ${girl.location}</div>
+                    <div class="price">${girl.price1.toLocaleString()} ₽ / ${girl.price2.toLocaleString()} ₽</div>
+                    <div class="tags">
+                        ${girl.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+            
+            cardsContainer.appendChild(card);
+        });
+    }
+
+    // Проверяем localStorage при загрузке
+    const noShow = localStorage.getItem('noShow18');
+    
+    if (noShow === 'true') {
+        // Если стоит галочка - сразу показываем меню
+        ageWarning.style.display = 'none';
+        mainContent.style.display = 'block';
+        renderCards();
+    } else {
+        // Если нет - показываем предупреждение
+        ageWarning.style.display = 'flex';
+        mainContent.style.display = 'none';
+    }
+
+    // Обработчик кнопки 18+
+    ageBtn.addEventListener('click', function() {
+        // Проверяем чекбокс
+        if (noShowCheckbox.checked) {
+            localStorage.setItem('noShow18', 'true');
+        }
+        
+        // Показываем меню
+        ageWarning.style.display = 'none';
+        mainContent.style.display = 'block';
+        renderCards();
+    });
+
+    // Для теста - покажем что localStorage работает
+    console.log('noShow18 =', localStorage.getItem('noShow18'));
+</script>
+
+</body>
+</html>
