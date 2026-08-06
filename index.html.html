@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#F4F1FF" id="metaTheme">
+
+<!-- Защита: разрешаем грузить файлы только с проверенных адресов -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://telegram.org;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  connect-src 'self';
+  object-src 'none';
+  base-uri 'none';
+  form-action 'none';
+  frame-ancestors https://web.telegram.org https://*.telegram.org;
+">
+<meta name="referrer" content="no-referrer">
+
+<title>ASTALAVISTA — букинг моделей и промо-персонала</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Onest:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Ставим сохранённую тему ДО того, как страница нарисуется.
+     Иначе при открытии на секунду мигнёт белым. -->
+<script>
+(function(){
+  try{
+    var t = localStorage.getItem('asta_theme');
+    if(t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    else document.documentElement.setAttribute('data-theme', 'light');
+  }catch(e){ document.documentElement.setAttribute('data-theme','light'); }
+})();
+</script>
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 1 · ЦВЕТА СВЕТЛОЙ ТЕМЫ
+   Меняете цвет здесь — он меняется во всём приложении сразу.
+   Цвет пишется кодом вида #RRGGBB. Подобрать можно на coolors.co
+   ══════════════════════════════════════════════════════════════ */
+:root, html[data-theme="light"]{
+  --bg:        #F4F1FF;   /* цвет фона */
+  --blob-1:    #A78BFA;   /* цветное пятно на фоне: фиолетовое */
+  --blob-2:    #5EEAD4;   /* цветное пятно на фоне: бирюзовое */
+  --blob-3:    #FDA4D4;   /* цветное пятно на фоне: розовое */
+  --blob-op:   .62;       /* насколько яркие пятна: 0 = невидимые, 1 = максимум */
+
+  --card:      rgba(255,255,255,.74);  /* фон карточек */
+  --card-2:    rgba(255,255,255,.90);
+  --panel:     rgba(255,255,255,.97);  /* фон выезжающих панелей */
+  --stroke:    rgba(124,92,240,.16);   /* цвет рамок */
+  --stroke-2:  rgba(124,92,240,.32);
+
+  --violet:    #7C5CF0;   /* главный акцент: кнопки, ссылки */
+  --mint:      #14B8A6;   /* второй акцент */
+  --rose:      #EC4899;   /* кнопка «Забронировать» */
+  --star:      #F59E0B;   /* цвет звёздочек в отзывах */
+
+  --txt:       #241F42;   /* основной текст */
+  --txt-2:     #5F5A85;   /* текст помельче */
+  --txt-3:     #8F8AB2;   /* серые подписи */
+
+  --ph-txt:    rgba(255,255,255,.92);  /* инициалы на заглушке фото */
+
+  --sh-s: 0 4px 16px rgba(124,92,240,.12);
+  --sh-m: 0 10px 34px rgba(124,92,240,.16);
+  --sh-l: 0 24px 60px rgba(124,92,240,.22);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 1.1 · ЦВЕТА ТЁМНОЙ ТЕМЫ
+   Работает точно так же, только для ночного режима.
+   ══════════════════════════════════════════════════════════════ */
+html[data-theme="dark"]{
+  --bg:        #0F0D1F;
+  --blob-1:    #6D4BE8;
+  --blob-2:    #0E9488;
+  --blob-3:    #C0327C;
+  --blob-op:   .48;
+
+  --card:      rgba(255,255,255,.055);
+  --card-2:    rgba(255,255,255,.085);
+  --panel:     rgba(26,23,48,.98);
+  --stroke:    rgba(255,255,255,.12);
+  --stroke-2:  rgba(255,255,255,.24);
+
+  --violet:    #9D82FF;
+  --mint:      #2DD4BF;
+  --rose:      #F472B6;
+  --star:      #FBBF24;
+
+  --txt:       #F2F0FA;
+  --txt-2:     #ABA6CB;
+  --txt-3:     #7B76A0;
+
+  --ph-txt:    rgba(255,255,255,.88);
+
+  --sh-s: 0 4px 16px rgba(0,0,0,.4);
+  --sh-m: 0 10px 34px rgba(0,0,0,.5);
+  --sh-l: 0 24px 60px rgba(0,0,0,.6);
+}
+
+/* ---- Размеры и шрифты. Обычно менять не нужно ---- */
+:root{
+  --r-s:14px; --r-m:20px; --r-l:28px;
+  --pad:16px;
+  --safe-top:0px; --safe-bottom:0px;
+  --f-display:'Unbounded',system-ui,sans-serif;
+  --f-body:'Onest','Manrope',system-ui,-apple-system,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:var(--f-body);
+  font-size:16px;          /* ← ОБЩИЙ РАЗМЕР ТЕКСТА. Больше цифра — крупнее весь текст */
+  line-height:1.6;
+  overflow-x:hidden;
+  overscroll-behavior-y:none;
+  -webkit-font-smoothing:antialiased;
+  transition:background .35s ease,color .35s ease;
+}
+body.locked{overflow:hidden}
+
+.aura{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aura i{position:absolute;display:block;border-radius:50%;filter:blur(85px);opacity:var(--blob-op);transition:opacity .35s ease}
+.aura i:nth-child(1){width:66vw;height:66vw;top:-24vw;left:-20vw;background:radial-gradient(circle,var(--blob-1),transparent 70%);animation:drift 26s var(--ease) infinite alternate}
+.aura i:nth-child(2){width:58vw;height:58vw;top:28vh;right:-26vw;background:radial-gradient(circle,var(--blob-2),transparent 70%);animation:drift 32s var(--ease) infinite alternate-reverse}
+.aura i:nth-child(3){width:52vw;height:52vw;bottom:-18vh;left:8vw;background:radial-gradient(circle,var(--blob-3),transparent 70%);animation:drift 38s var(--ease) infinite alternate}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(7vw,-6vh,0) scale(1.2)}}
+
+.shell{position:relative;z-index:2;min-height:100%;max-width:1280px;margin:0 auto;padding-bottom:calc(44px + var(--safe-bottom))}
+
+/* ---------- Шапка ---------- */
+.hdr{
+  position:sticky;top:0;z-index:40;
+  padding:calc(var(--safe-top) + 12px) var(--pad) 12px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  background:var(--bg);
+  backdrop-filter:blur(24px) saturate(150%);
+  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  border-bottom:1px solid var(--stroke);
+  transition:background .35s ease,border-color .35s ease;
+}
+.hdr .side{display:flex;gap:8px;align-items:center}
+.brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;pointer-events:none}
+.mark{width:30px;height:30px;flex:none;border-radius:10px;display:grid;place-items:center;background:linear-gradient(140deg,var(--violet),var(--mint));box-shadow:0 6px 18px rgba(124,92,240,.35)}
+.mark svg{width:16px;height:16px}
+.brand h1{
+  font-family:var(--f-display);font-weight:800;font-size:14px;letter-spacing:.1em;line-height:1;white-space:nowrap;
+  background:linear-gradient(100deg,var(--violet),var(--mint));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+@media(max-width:359px){.brand h1{font-size:12px}.mark{display:none}}
+
+.ico{
+  width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--stroke);color:var(--txt-2);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:var(--sh-s);cursor:pointer;position:relative;
+  transition:transform .2s var(--ease),color .2s,border-color .2s,background .2s;
+}
+.ico:active{transform:scale(.9)}
+.ico svg{width:18px;height:18px}
+.ico.on{color:#fff;border-color:transparent;background:linear-gradient(140deg,var(--rose),var(--violet))}
+.ico .dot{position:absolute;top:4px;right:4px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--rose);color:#fff;font-size:10px;font-weight:700;line-height:17px;text-align:center;border:2px solid var(--bg)}
+.ico .dot[hidden]{display:none}
+
+/* ---------- Поиск ---------- */
+.tools{padding:14px var(--pad) 0;display:flex;gap:10px}
+.search{flex:1;display:flex;align-items:center;background:var(--card);border:1px solid var(--stroke);border-radius:17px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--sh-s);transition:border-color .25s}
+.search:focus-within{border-color:var(--stroke-2)}
+.search svg{width:18px;height:18px;color:var(--txt-3);margin-left:14px;flex:none}
+.search input{flex:1;background:none;border:0;outline:0;color:var(--txt);font-family:var(--f-body);font-size:15px;padding:14px 12px;min-width:0}
+.search input::placeholder{color:var(--txt-3)}
+.search .clr{width:30px;height:30px;margin-right:7px;border:0;background:var(--stroke);border-radius:50%;color:var(--txt-2);display:none;place-items:center;cursor:pointer;flex:none;font-size:16px;line-height:1}
+.search.filled .clr{display:grid}
+
+.fbtn{position:relative;flex:none;width:52px;border-radius:17px;border:0;cursor:pointer;background:linear-gradient(145deg,var(--violet),var(--mint));color:#fff;display:grid;place-items:center;box-shadow:0 8px 22px rgba(124,92,240,.35);transition:transform .2s var(--ease)}
+.fbtn:active{transform:scale(.93)}
+.fbtn svg{width:20px;height:20px}
+.fbtn .badge{position:absolute;top:5px;right:5px;min-width:18px;height:18px;border-radius:9px;padding:0 4px;background:#fff;color:var(--violet);font-size:10px;font-weight:800;line-height:18px;text-align:center}
+.fbtn .badge[hidden]{display:none}
+
+/* ---------- Быстрые кнопки ---------- */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:14px var(--pad) 2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:9px 16px;border-radius:99px;cursor:pointer;white-space:nowrap;background:var(--card);border:1px solid var(--stroke);color:var(--txt-2);font-family:var(--f-body);font-size:13.5px;font-weight:600;box-shadow:var(--sh-s);transition:all .22s var(--ease)}
+.chip:active{transform:scale(.94)}
+.chip.on{color:#fff;border-color:transparent;background:linear-gradient(120deg,var(--violet),var(--mint));box-shadow:0 8px 22px rgba(124,92,240,.36)}
+
+.reshdr{display:flex;align-items:baseline;gap:8px;padding:18px var(--pad) 12px}
+.reshdr b{font-family:var(--f-display);font-weight:600;font-size:15px}
+.reshdr span{font-size:13px;color:var(--txt-3)}
+.reshdr .reset{margin-left:auto;font-size:13.5px;color:var(--violet);cursor:pointer;font-weight:600;border:0;background:none;font-family:var(--f-body);padding:4px 0}
+.reshdr .reset[hidden]{display:none}
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 2 · СКОЛЬКО КАРТОЧЕК ПОМЕЩАЕТСЯ В ОДИН РЯД
+   Цифра внутри repeat(ЦИФРА,1fr) — это количество карточек.
+   ══════════════════════════════════════════════════════════════ */
+.grid{
+  display:grid;gap:13px;padding:0 var(--pad);
+  grid-template-columns:repeat(2,1fr);                 /* НА ТЕЛЕФОНЕ — 2 штуки */
+}
+@media(min-width:680px){
+  .grid{grid-template-columns:repeat(3,1fr);gap:16px}  /* НА ПЛАНШЕТЕ — 3 штуки */
+}
+@media(min-width:1000px){
+  .grid{grid-template-columns:repeat(4,1fr);gap:18px}  /* НА КОМПЬЮТЕРЕ — 4 штуки */
+}
+
+/* ---------- Карточка ---------- */
+.card{position:relative;border-radius:var(--r-m);overflow:hidden;cursor:pointer;background:var(--card-2);border:1px solid var(--stroke);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--sh-s);transition:transform .28s var(--ease),border-color .28s,box-shadow .28s;animation:pop .42s var(--ease) both}
+.card:active{transform:scale(.975)}
+@media(hover:hover){.card:hover{transform:translateY(-3px);border-color:var(--stroke-2);box-shadow:var(--sh-m)}}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.media{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--stroke)}
+.media img{width:100%;height:100%;object-fit:cover;display:block}
+.ph{width:100%;height:100%;display:grid;place-items:center;position:relative;background:linear-gradient(150deg,var(--c1),var(--c2))}
+.ph::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.2) 0 1px,transparent 1px 24px),repeating-linear-gradient(0deg,rgba(255,255,255,.2) 0 1px,transparent 1px 24px)}
+.ph b{font-family:var(--f-display);font-weight:800;font-size:34px;color:var(--ph-txt);text-shadow:0 2px 14px rgba(0,0,0,.22);z-index:1}
+.veil{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.34) 62%,rgba(0,0,0,.78) 100%)}
+
+.fav{position:absolute;top:9px;right:9px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:grid;place-items:center;cursor:pointer;color:#fff;transition:transform .2s var(--ease),color .2s}
+.fav:active{transform:scale(.82)}
+.fav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+.fav.on{color:#FF5C9E}
+.fav.on svg{fill:currentColor}
+
+/* Имя и цена поверх фото */
+.ident{position:absolute;left:12px;right:12px;bottom:11px;z-index:1}
+.ident .nm{display:flex;align-items:center;gap:5px;min-width:0}
+.ident h3{font-family:var(--f-display);font-weight:600;font-size:15px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.ident .price{margin-top:4px;font-size:15px;font-weight:700;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.ident .price span{font-size:12.5px;font-weight:500;opacity:.85}
+
+.body{padding:12px 13px 14px}
+.spec{font-size:12.5px;font-weight:500;color:var(--txt-2);display:flex;flex-wrap:wrap;gap:2px 9px}
+.spec s{text-decoration:none;color:var(--txt-3);font-weight:400}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 3.2 · ЦВЕТА ПЛАШЕК СПЕЦИАЛИЗАЦИЙ
+   Семь готовых цветов: t1 фиолетовый, t2 бирюзовый, t3 розовый,
+   t4 жёлтый, t5 красный, t6 синий, t7 зелёный.
+   Какой специализации какой цвет — задаётся ниже в скрипте.
+   ══════════════════════════════════════════════════════════════ */
+.tag{padding:5px 10px;border-radius:9px;font-size:11.5px;font-weight:600;border:1px solid}
+.tag.t1{background:#EEE9FE;border-color:#D0C2FC;color:#5B3FD1}
+.tag.t2{background:#DFF7F4;border-color:#A9E9E0;color:#0D7A6E}
+.tag.t3{background:#FDE7F1;border-color:#F9C2DC;color:#BE2A72}
+.tag.t4{background:#FEF3D7;border-color:#FBE0A0;color:#A16207}
+.tag.t5{background:#FEE6E6;border-color:#FBC0C0;color:#C22B2B}
+.tag.t6{background:#E3EDFE;border-color:#BBD3FB;color:#1D5FD1}
+.tag.t7{background:#E4F7E0;border-color:#BCE9B2;color:#3A7D28}
+
+html[data-theme="dark"] .tag.t1{background:rgba(124,92,240,.24);border-color:rgba(124,92,240,.46);color:#C9B7FF}
+html[data-theme="dark"] .tag.t2{background:rgba(20,184,166,.22);border-color:rgba(20,184,166,.44);color:#7BE8DA}
+html[data-theme="dark"] .tag.t3{background:rgba(236,72,153,.22);border-color:rgba(236,72,153,.44);color:#FBA5CE}
+html[data-theme="dark"] .tag.t4{background:rgba(245,158,11,.22);border-color:rgba(245,158,11,.44);color:#FCD46F}
+html[data-theme="dark"] .tag.t5{background:rgba(239,68,68,.22);border-color:rgba(239,68,68,.44);color:#FCA5A5}
+html[data-theme="dark"] .tag.t6{background:rgba(59,130,246,.22);border-color:rgba(59,130,246,.44);color:#9DC2FB}
+html[data-theme="dark"] .tag.t7{background:rgba(34,197,94,.22);border-color:rgba(34,197,94,.44);color:#93E0AC}
+
+/* ---------- Галочка «проверено» ---------- */
+.vf{flex:none;width:17px;height:17px;display:block;filter:drop-shadow(0 2px 4px rgba(45,127,249,.5))}
+.vf svg{width:100%;height:100%;display:block}
+.vf.lg{width:23px;height:23px}
+
+/* ---------- Пусто ---------- */
+.empty{padding:64px 28px;text-align:center;grid-column:1/-1}
+.empty .ring{width:74px;height:74px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--stroke);background:var(--card);box-shadow:var(--sh-s)}
+.empty .ring svg{width:27px;height:27px;color:var(--txt-3)}
+.empty h4{font-family:var(--f-display);font-weight:600;font-size:16px;margin-bottom:8px}
+.empty p{font-size:14.5px;color:var(--txt-2);max-width:300px;margin:0 auto 20px}
+.empty button{padding:13px 26px;border-radius:14px;border:0;cursor:pointer;background:linear-gradient(120deg,var(--violet),var(--mint));color:#fff;font-family:var(--f-body);font-weight:700;font-size:14px}
+
+.skel{border-radius:var(--r-m);overflow:hidden;background:var(--card-2);border:1px solid var(--stroke)}
+.skel .m{aspect-ratio:3/4}
+.skel .l{height:11px;margin:12px;border-radius:6px}
+.skel .m,.skel .l{background:linear-gradient(100deg,var(--stroke) 30%,var(--stroke-2) 50%,var(--stroke) 70%);background-size:220% 100%;animation:shine 1.3s linear infinite}
+@keyframes shine{from{background-position:180% 0}to{background-position:-80% 0}}
+
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(15,13,31,.45);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;visibility:hidden;transition:opacity .34s var(--ease),visibility .34s}
+.scrim.on{opacity:1;visibility:visible}
+
+/* ---------- Панели ---------- */
+.drawer,.sheet{
+  position:fixed;left:0;right:0;bottom:0;
+  border-radius:var(--r-l) var(--r-l) 0 0;
+  background:var(--panel);
+  border-top:1px solid var(--stroke-2);
+  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
+  box-shadow:0 -20px 60px rgba(15,13,31,.28);
+  transform:translateY(101%);transition:transform .44s var(--ease);
+  display:flex;flex-direction:column;
+}
+.drawer{z-index:70;max-height:88vh}
+.sheet{z-index:80;height:94vh;overflow:hidden}
+.drawer.on,.sheet.on{transform:none}
+@media(min-width:1000px){
+  .drawer,.sheet{max-width:600px;left:50%;transform:translate(-50%,101%)}
+  .drawer.on,.sheet.on{transform:translate(-50%,0)}
+}
+.grab{width:40px;height:4px;border-radius:99px;background:var(--stroke-2);margin:11px auto 0;flex:none}
+.dhdr{display:flex;align-items:center;padding:14px var(--pad) 6px;flex:none}
+.dhdr h2{font-family:var(--f-display);font-weight:600;font-size:17px;margin-right:auto}
+.dhdr .x{width:36px;height:36px;border-radius:12px;border:1px solid var(--stroke);background:var(--card);color:var(--txt-2);display:grid;place-items:center;cursor:pointer;font-size:18px;line-height:1}
+
+.dbody{overflow-y:auto;padding:8px var(--pad) 18px;flex:1;-webkit-overflow-scrolling:touch}
+.fld{margin-top:26px}
+.fld:first-child{margin-top:6px}
+.lbl{display:flex;align-items:baseline;gap:8px;margin-bottom:15px}
+.lbl h4{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3)}
+.lbl output{margin-left:auto;font-size:13.5px;font-weight:600;color:var(--violet);background:var(--stroke);padding:4px 11px;border-radius:8px}
+
+.range{position:relative;height:34px}
+.track{position:absolute;top:15px;left:2px;right:2px;height:5px;border-radius:99px;background:var(--stroke)}
+.fill{position:absolute;top:0;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--mint))}
+.range input{position:absolute;top:7px;left:0;width:100%;height:20px;margin:0;background:none;pointer-events:none;-webkit-appearance:none;appearance:none}
+.range input:focus{outline:0}
+.range input::-webkit-slider-thumb{-webkit-appearance:none;pointer-events:auto;width:22px;height:22px;border-radius:50%;cursor:grab;background:#fff;border:3px solid var(--violet);box-shadow:0 3px 10px rgba(0,0,0,.25)}
+.range input::-moz-range-thumb{pointer-events:auto;width:17px;height:17px;border-radius:50%;cursor:grab;background:#fff;border:3px solid var(--violet)}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--txt-3);margin-top:2px}
+
+.sel{position:relative}
+.sel select{width:100%;appearance:none;-webkit-appearance:none;cursor:pointer;background:var(--card);border:1px solid var(--stroke);border-radius:15px;color:var(--txt);font-family:var(--f-body);font-size:15px;font-weight:500;padding:15px 42px 15px 16px;outline:0}
+.sel option{background:var(--bg);color:var(--txt)}
+.sel::after{content:'';position:absolute;right:18px;top:50%;width:7px;height:7px;pointer-events:none;border-right:2px solid var(--txt-3);border-bottom:2px solid var(--txt-3);transform:translateY(-70%) rotate(45deg)}
+
+.toggles{display:flex;flex-wrap:wrap;gap:8px}
+.tg{padding:10px 15px;border-radius:13px;cursor:pointer;font-family:var(--f-body);font-size:13.5px;font-weight:600;background:var(--card);border:1px solid var(--stroke);color:var(--txt-2);transition:all .22s var(--ease)}
+.tg:active{transform:scale(.94)}
+.tg.on{color:#fff;border-color:transparent;background:linear-gradient(120deg,var(--mint),var(--violet))}
+
+.dfoot,.sfoot{flex:none;display:flex;gap:10px;padding:14px var(--pad) calc(16px + var(--safe-bottom));border-top:1px solid var(--stroke);background:var(--panel)}
+.btn{border:0;border-radius:16px;cursor:pointer;font-family:var(--f-body);font-weight:700;font-size:15px;padding:16px 20px;transition:transform .2s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn.ghost{flex:none;background:var(--card);border:1px solid var(--stroke);color:var(--txt-2)}
+.btn.primary{flex:1;color:#fff;background:linear-gradient(120deg,var(--violet),var(--mint))}
+.btn.book{flex:1;color:#fff;background:linear-gradient(120deg,var(--rose),var(--violet))}
+
+/* ---------- Профиль ---------- */
+.sclose{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;border-radius:13px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.3);color:#fff;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:grid;place-items:center;font-size:19px;line-height:1}
+.sbody{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.hero{position:relative;aspect-ratio:4/5;background:var(--stroke)}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .veil{background:linear-gradient(180deg,transparent 34%,rgba(0,0,0,.4) 66%,rgba(0,0,0,.82) 100%)}
+.hero .name{position:absolute;left:var(--pad);right:var(--pad);bottom:18px;z-index:1}
+.hero .name .nm{display:flex;align-items:center;gap:9px}
+.hero .name h2{font-family:var(--f-display);font-weight:800;font-size:26px;line-height:1.18;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.hero .name .row{display:flex;align-items:center;gap:9px;margin-top:8px;font-size:14px;color:rgba(255,255,255,.88);flex-wrap:wrap;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+
+.sec{padding:24px var(--pad) 0}
+.sec h5{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-3);margin-bottom:13px}
+.card-spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(74px,1fr));gap:1px;border-radius:var(--r-m);overflow:hidden;background:var(--stroke);border:1px solid var(--stroke)}
+.card-spec div{background:var(--panel);padding:16px 8px;text-align:center}
+.card-spec b{display:block;font-family:var(--f-display);font-weight:600;font-size:19px;color:var(--txt)}
+.card-spec s{display:block;text-decoration:none;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt-3);margin-top:5px}
+.about{font-size:15.5px;color:var(--txt-2);line-height:1.7}
+
+.priceline{margin:24px var(--pad) 0;padding:18px 20px;border-radius:var(--r-m);display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--stroke-2)}
+.priceline .big{font-family:var(--f-display);font-weight:800;font-size:27px;color:var(--txt)}
+.priceline s{text-decoration:none;font-size:11.5px;color:var(--txt-3);display:block;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.priceline .min{margin-left:auto;text-align:right;font-size:12.5px;color:var(--txt-2);line-height:1.45}
+
+/* ---------- Отзывы ---------- */
+.rv-top{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--r-m);background:var(--card);border:1px solid var(--stroke);margin-bottom:14px}
+.rv-score{font-family:var(--f-display);font-weight:800;font-size:32px;line-height:1;color:var(--txt)}
+.rv-stars{font-size:15px;letter-spacing:2px;color:var(--star)}
+.rv-cnt{font-size:13px;color:var(--txt-3);margin-top:3px}
+
+.rv{padding:15px 16px;border-radius:var(--r-m);background:var(--card);border:1px solid var(--stroke);margin-bottom:10px;position:relative}
+.rv .h{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.rv .who{font-weight:700;font-size:14.5px}
+.rv .st{font-size:13px;letter-spacing:1.5px;color:var(--star)}
+.rv .dt{margin-left:auto;font-size:12px;color:var(--txt-3)}
+.rv .tx{font-size:14.5px;color:var(--txt-2);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.rv .del{position:absolute;right:10px;bottom:10px;border:0;background:var(--stroke);color:var(--txt-2);border-radius:9px;padding:6px 11px;font-size:12px;font-family:var(--f-body);font-weight:600;cursor:pointer}
+.rv .del:active{transform:scale(.94)}
+
+.rv-empty{padding:22px;text-align:center;font-size:14.5px;color:var(--txt-3);border:1px dashed var(--stroke-2);border-radius:var(--r-m);margin-bottom:14px}
+
+.rv-form{padding:16px;border-radius:var(--r-m);background:var(--card);border:1px solid var(--stroke);margin-top:6px}
+.rv-form h6{font-size:14.5px;font-weight:700;margin-bottom:12px;color:var(--txt)}
+.rv-pick{display:flex;gap:5px;margin-bottom:12px}
+.rv-pick button{border:0;background:none;cursor:pointer;font-size:27px;line-height:1;color:var(--stroke-2);padding:0;transition:transform .15s var(--ease)}
+.rv-pick button:active{transform:scale(.85)}
+.rv-pick button.on{color:var(--star)}
+.rv-form input,.rv-form textarea{
+  width:100%;background:var(--panel);border:1px solid var(--stroke);border-radius:13px;
+  color:var(--txt);font-family:var(--f-body);font-size:15px;padding:13px 14px;outline:0;margin-bottom:10px;
+}
+.rv-form input:focus,.rv-form textarea:focus{border-color:var(--stroke-2)}
+.rv-form textarea{min-height:96px;resize:vertical;line-height:1.55}
+.rv-form input::placeholder,.rv-form textarea::placeholder{color:var(--txt-3)}
+.rv-send{width:100%;border:0;border-radius:14px;padding:15px;cursor:pointer;font-family:var(--f-body);font-weight:700;font-size:15px;color:#fff;background:linear-gradient(120deg,var(--violet),var(--mint))}
+.rv-send:active{transform:scale(.98)}
+
+.toast{position:fixed;left:50%;bottom:calc(26px + var(--safe-bottom));z-index:99;transform:translate(-50%,26px);opacity:0;pointer-events:none;padding:14px 22px;border-radius:15px;max-width:88vw;text-align:center;background:var(--panel);border:1px solid var(--stroke-2);box-shadow:var(--sh-l);font-size:14.5px;font-weight:600;color:var(--txt);transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+:focus-visible{outline:2.5px solid var(--violet);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<!-- Заготовка для глянцевой галочки. Не удалять — без неё галочка станет серой -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="vfGrad" x1="0" y1="0" x2="0.55" y2="1">
+    <stop offset="0" stop-color="#6FD0FF"/><stop offset="0.45" stop-color="#3A93F7"/><stop offset="1" stop-color="#1F63E0"/>
+  </linearGradient>
+  <linearGradient id="vfGloss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.85"/>
+    <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.10"/>
+    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+  </linearGradient>
+</defs></svg>
+
+<div class="aura"><i></i><i></i><i></i></div>
+
+<div class="shell">
+  <header class="hdr">
+    <div class="side">
+      <!-- Кнопка переключения светлой и тёмной темы -->
+      <button class="ico" id="themeBtn" aria-label="Сменить тему"></button>
+    </div>
+
+    <!-- ПУНКТ 7 · НАЗВАНИЕ. Поменяйте текст между <h1> и </h1> -->
+    <div class="brand">
+      <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 6.1 6.6.6-5 4.3 1.5 6.4L12 16l-5.7 3.4L7.8 13l-5-4.3 6.6-.6L12 2z"/></svg></div>
+      <h1>ASTALAVISTA</h1>
+    </div>
+
+    <div class="side">
+      <button class="ico" id="favBtn" aria-label="Избранное">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 000-7.8z"/></svg>
+        <span class="dot" id="favCount" hidden>0</span>
+      </button>
+      <button class="ico" id="cartBtn" aria-label="Мои заявки">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span class="dot" id="bookCount" hidden>0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="tools">
+    <label class="search" id="searchWrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Поиск по имени" autocomplete="off" enterkeyhint="search" maxlength="60">
+      <button class="clr" id="clrBtn" type="button" aria-label="Очистить">×</button>
+    </label>
+    <button class="fbtn" id="openFilters" aria-label="Фильтры">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      <span class="badge" id="fbadge" hidden>0</span>
+    </button>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="reshdr">
+    <b id="resTitle">Каталог</b>
+    <span id="resCount">—</span>
+    <button class="reset" id="resetTop" hidden>Сбросить</button>
+  </div>
+
+  <main class="grid" id="grid"></main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Фильтры">
+  <div class="grab"></div>
+  <div class="dhdr"><h2>Фильтры</h2><button class="x" id="closeFilters" aria-label="Закрыть">×</button></div>
+  <div class="dbody">
+    <!-- ПУНКТ 5 · КРАЙНИЕ ЗНАЧЕНИЯ ПОЛЗУНКОВ.
+         Эти же числа продублированы ниже в скрипте (ПУНКТ 5) — меняйте в обоих местах! -->
+    <div class="fld">
+      <div class="lbl"><h4>Возраст</h4><output id="ageOut">18 – 50</output></div>
+      <div class="range">
+        <div class="track"><div class="fill" id="ageFill"></div></div>
+        <input type="range" id="ageMin" min="18" max="50" step="1" value="18" aria-label="Возраст от">
+        <input type="range" id="ageMax" min="18" max="50" step="1" value="50" aria-label="Возраст до">
+      </div>
+      <div class="ends"><span>18</span><span>50</span></div>
+    </div>
+    <div class="fld">
+      <div class="lbl"><h4>Рост, см</h4><output id="hOut">150 – 190</output></div>
+      <div class="range">
+        <div class="track"><div class="fill" id="hFill"></div></div>
+        <input type="range" id="hMin" min="150" max="190" step="1" value="150" aria-label="Рост от">
+        <input type="range" id="hMax" min="150" max="190" step="1" value="190" aria-label="Рост до">
+      </div>
+      <div class="ends"><span>150</span><span>190</span></div>
+    </div>
+    <div class="fld">
+      <div class="lbl"><h4>Ставка, ₽/час</h4><output id="pOut">1 500 – 15 000</output></div>
+      <div class="range">
+        <div class="track"><div class="fill" id="pFill"></div></div>
+        <input type="range" id="pMin" min="1500" max="15000" step="500" value="1500" aria-label="Ставка от">
+        <input type="range" id="pMax" min="1500" max="15000" step="500" value="15000" aria-label="Ставка до">
+      </div>
+      <div class="ends"><span>1 500 ₽</span><span>15 000 ₽</span></div>
+    </div>
+    <div class="fld"><div class="lbl"><h4>Специализация</h4></div><div class="toggles" id="fTags"></div></div>
+    <div class="fld"><div class="lbl"><h4>Мастерство</h4></div><div class="toggles" id="fSkills"></div></div>
+    <div class="fld">
+      <div class="lbl"><h4>Сортировка</h4></div>
+      <div class="sel"><select id="fSort">
+        <option value="rec">Сначала популярные</option>
+        <option value="pa">Ставка: сначала дешевле</option>
+        <option value="pd">Ставка: сначала дороже</option>
+        <option value="rating">Лучшие отзывы</option>
+        <option value="height">Сначала выше ростом</option>
+      </select></div>
+    </div>
+  </div>
+  <div class="dfoot">
+    <button class="btn ghost" id="resetFilters">Сбросить</button>
+    <button class="btn primary" id="applyFilters">Показать <span id="applyN">0</span></button>
+  </div>
+</aside>
+
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Профиль">
+  <button class="sclose" id="closeSheet" aria-label="Закрыть">×</button>
+  <div class="sbody" id="sheetBody"></div>
+  <div class="sfoot">
+    <button class="btn ghost" id="sheetFav">В избранное</button>
+    <button class="btn book" id="sheetBook">Забронировать</button>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ██████████████████████████████████████████████████████████████
+   ГДЕ ЧТО ЛЕЖИТ
+
+   ПУНКТ 1   Цвета светлой темы ....... вверху, в <style>
+   ПУНКТ 1.1 Цвета тёмной темы ........ вверху, в <style>
+   ПУНКТ 2   Карточек в ряд ........... вверху, в <style>
+   ПУНКТ 3   Список специализаций ..... ниже
+   ПУНКТ 3.1 Кнопки на главном ........ ниже
+   ПУНКТ 3.2 Цвета специализаций ...... ниже
+   ПУНКТ 4   Список мастерства ........ ниже
+   ПУНКТ 5   Границы ползунков ........ ниже
+   ПУНКТ 6   АНКЕТЫ ................... ниже ← самое главное
+   ПУНКТ 7   Надписи .................. ниже
+   ПУНКТ 8   Кто удаляет отзывы ....... ниже
+   ПУНКТ 9   Защита ................... ниже
+   ПУНКТ 10  Работа программы ......... ниже, трогать не нужно
+
+   Пошаговая инструкция — в файле README.md
+   ██████████████████████████████████████████████████████████████ */
+
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 3 · СПИСОК СПЕЦИАЛИЗАЦИЙ
+   Это галочки в фильтре и цветные плашки на карточках.
+   Добавить: допишите строку. Удалить: сотрите строку
+   и уберите её из всех анкет ниже.
+   ══════════════════════════════════════════════════════════════ */
+const TAGS = [
+  'Показы',
+  'Фотосъёмка',
+  'Видеосъёмка',
+  'Выставки',
+  'Хостес',
+  'Промо',
+  'Каталог',
+  'Beauty',
+  'Ведущая',
+  'Автосалон',
+  'Конференции',
+  'Fitness'
+];
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 3.1 · КНОПКИ НА ГЛАВНОМ ЭКРАНЕ
+   Ряд кнопок под строкой поиска.
+   Писать сюда можно ТОЛЬКО то, что уже есть в списке выше.
+   ══════════════════════════════════════════════════════════════ */
+const QUICK_TAGS = ['Показы','Фотосъёмка','Хостес','Промо','Ведущая','Выставки','Beauty','Каталог'];
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 3.2 · КАКОЙ СПЕЦИАЛИЗАЦИИ КАКОЙ ЦВЕТ
+   Доступно семь цветов:
+      't1' фиолетовый   't2' бирюзовый   't3' розовый
+      't4' жёлтый       't5' красный     't6' синий
+      't7' зелёный
+   Слева название, справа цвет. Если название сюда не вписать,
+   плашка будет фиолетовой.
+   ══════════════════════════════════════════════════════════════ */
+const TAG_COLORS = {
+  'Показы':      't1',
+  'Фотосъёмка':  't2',
+  'Видеосъёмка': 't6',
+  'Выставки':    't4',
+  'Хостес':      't3',
+  'Промо':       't5',
+  'Каталог':     't7',
+  'Beauty':      't3',
+  'Ведущая':     't1',
+  'Автосалон':   't6',
+  'Конференции': 't4',
+  'Fitness':     't7'
+};
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 4 · СПИСОК МАСТЕРСТВА
+   Что девушка умеет на площадке. Отдельно от специализаций.
+   ══════════════════════════════════════════════════════════════ */
+const SKILLS = [
+  'Позирование',
+  'Выставки'
+];
+
+/* Цвета для мастерства — работают так же, как выше */
+const SKILL_COLORS = {
+  'Позирование': 't3',
+  'Выставки':    't4'
+};
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 7 · НАДПИСИ
+   Все тексты приложения собраны здесь.
+   ══════════════════════════════════════════════════════════════ */
+const TEXT = {
+  minShift:   'минимальная смена — 3 часа',
+  bookedMsg:  'Менеджер свяжется с вами в чате и подтвердит дату и длительность смены.',
+  emptyTitle: 'Никто не подошёл под условия',
+  emptyText:  'Расширьте возраст, рост или ставку — либо снимите часть специализаций.',
+  noReviews:  'Отзывов пока нет. Будьте первым.'
+};
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 8 · КТО МОЖЕТ УДАЛЯТЬ ОТЗЫВЫ
+   Впишите сюда свой номер в Telegram — только у вас появятся
+   кнопки «Удалить» под отзывами.
+   Узнать свой номер: напишите боту @userinfobot, он пришлёт
+   число вида 123456789. Впишите его без кавычек.
+   Можно вписать несколько через запятую: [123456789, 987654321]
+   ══════════════════════════════════════════════════════════════ */
+const ADMIN_IDS = [
+  // 123456789
+];
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 5 · КРАЙНИЕ ЗНАЧЕНИЯ ПОЛЗУНКОВ
+   Должны совпадать с числами в разметке выше (ПУНКТ 5)!
+   ══════════════════════════════════════════════════════════════ */
+const DEFAULTS = {
+  ageMin: 18,   ageMax: 50,      /* возраст: от и до          */
+  hMin:  150,   hMax:  190,      /* рост в сантиметрах        */
+  pMin: 1500,   pMax: 15000,     /* ставка в рублях за час    */
+  tags: [], skills: [], sort: 'rec'
+};
+
+
+/* ══════════════════════════════════════════════════════════════
+   ██  ПУНКТ 6 · АНКЕТЫ  ██
+   ──────────────────────────────────────────────────────────────
+   Одна строка в фигурных скобках { ... } — одна девушка.
+
+   ЧТО ОЗНАЧАЕТ КАЖДОЕ ПОЛЕ:
+     id       номер анкеты. У каждой свой, повторяться нельзя
+     name     имя, пишется в кавычках
+     age      возраст, просто число
+     height   рост в сантиметрах, число
+     weight   вес в килограммах, число
+     bust     грудь, число
+     price    цена за час в рублях. Без пробелов: 4500
+     jobs     сколько работ выполнено, число
+     verified true = синяя галочка, false = без галочки
+     tags     специализации в квадратных скобках
+     skills   мастерство. Можно не писать вообще
+     about    описание, в кавычках
+     photo    ссылка на фото. Можно не писать
+     reviews  отзывы, которые вы вписали сами. Можно не писать
+
+   ЧТОБЫ ДОБАВИТЬ: поставьте запятую после последней анкеты
+   и с новой строки напишите свою.
+
+   ЧТОБЫ УДАЛИТЬ: сотрите строку целиком, от { до },
+
+   ГОТОВЫЙ ОБРАЗЕЦ ДЛЯ КОПИРОВАНИЯ:
+     {id:21, name:'Имя Фамилия', age:24, height:174, weight:55,
+      bust:86, price:5000, jobs:40, verified:true,
+      tags:['Показы','Каталог'], skills:['Позирование'],
+      about:'Короткое описание.'}
+   ══════════════════════════════════════════════════════════════ */
+const MODELS = [
+
+  /* У этой анкеты для примера заполнены отзывы и мастерство —
+     посмотрите, как это выглядит, и делайте так же у остальных.
+     Про отзывы подробно написано сразу после списка анкет. */
+  {id:1, name:'Алиса Ветрова', age:23, height:178, weight:56, bust:86, price:4500, jobs:126, verified:true,
+   tags:['Показы','Фотосъёмка','Каталог'],
+   skills:['Позирование','Выставки'],
+   about:'Подиумный опыт на региональных показах, уверенно работает с пластикой и кадром. Быстро схватывает референс, комфортна в длинных съёмочных сменах.',
+   reviews:[
+     {who:'Студия «Контур»', stars:5, text:'Снимали каталог верхней одежды, 140 образов за смену. Алиса держала темп до конца, ни одного лишнего дубля. Отдельно отмечу пунктуальность — приехала за 20 минут до начала.', date:'2026-05-14'},
+     {who:'Марк, фотограф',  stars:5, text:'Работали над лукбуком. Понимает свет, сама подсказывает ракурсы. Из тех моделей, с которыми съёмка идёт быстрее плана.', date:'2026-04-02'},
+     {who:'Event-агентство «Пик»', stars:4, text:'Показ на открытии ТЦ. Всё чётко, замечаний нет. Единственное — заранее уточняйте обувь, размер оказался нестандартный.', date:'2026-03-21'}
+   ]},
+
+  {id:2,  name:'Марина Соколова',  age:26, height:172, weight:54, bust:88, price:5500,  jobs:203, verified:true,  tags:['Хостес','Выставки','Конференции'],     about:'Ведёт зону регистрации и приём гостей на деловых мероприятиях. Спокойно держит поток и работает с регламентом площадки.'},
+  {id:3,  name:'Кристина Лаврова', age:21, height:180, weight:57, bust:84, price:3800,  jobs:64,  verified:true,  tags:['Показы','Видеосъёмка','Beauty'],       about:'Сильный бьюти-типаж, снималась в рекламных роликах локальных брендов. Хорошо держит эмоцию на крупном плане.'},
+  {id:4,  name:'Дарья Ким',        age:24, height:168, weight:51, bust:82, price:4800,  jobs:141, verified:true,  tags:['Промо','Выставки','Каталог'],          about:'Промо-активации в торговых центрах и на профильных выставках. Ведёт презентации продукта у стенда.'},
+  {id:5,  name:'Ева Романова',     age:28, height:175, weight:58, bust:90, price:6500,  jobs:178, verified:true,  tags:['Ведущая','Конференции','Видеосъёмка'], about:'Ведёт деловые конференции и продуктовые презентации. Готовит сценарий вместе с командой, работает с суфлёром и без него.'},
+  {id:6,  name:'София Багрова',    age:22, height:176, weight:55, bust:85, price:4000,  jobs:88,  verified:true,  tags:['Фотосъёмка','Каталог','Показы'],       about:'Каталожная съёмка одежды в быстром темпе — до 200 образов за смену. Аккуратна с деталями посадки вещей.'},
+  {id:7,  name:'Полина Астахова',  age:25, height:170, weight:53, bust:86, price:3500,  jobs:73,  verified:false, tags:['Промо','Fitness','Автосалон'],         about:'Спортивный типаж, съёмки для фитнес-брендов и промо на автомобильных площадках. Права категории B.'},
+  {id:8,  name:'Виктория Нольд',   age:30, height:174, weight:57, bust:89, price:8500,  jobs:246, verified:true,  tags:['Ведущая','Конференции','Выставки'],    about:'Модератор деловых сессий и отраслевых форумов. Работает с тайм-кипингом и панельными дискуссиями.'},
+  {id:9,  name:'Ника Ершова',      age:19, height:182, weight:56, bust:83, price:5200,  jobs:52,  verified:true,  tags:['Показы','Видеосъёмка','Beauty'],       about:'Высокий подиумный рост, работала на сезонных показах дизайнеров. Легко подстраивается под хореографию выхода.'},
+  {id:10, name:'Милана Гурова',    age:27, height:166, weight:52, bust:84, price:3000,  jobs:96,  verified:false, tags:['Хостес','Промо','Выставки'],           about:'Стойки регистрации, раздача материалов, работа со сканером бейджей. Спокойно держит смену 10+ часов.'},
+  {id:11, name:'Арина Дельвиг',    age:23, height:179, weight:58, bust:87, price:5800,  jobs:134, verified:true,  tags:['Показы','Фотосъёмка','Видеосъёмка'],   about:'Универсальный fashion-профиль: подиум, лукбуки, имиджевое видео. Есть актёрская подготовка.'},
+  {id:12, name:'Лада Черных',      age:32, height:171, weight:59, bust:91, price:7000,  jobs:212, verified:true,  tags:['Ведущая','Конференции','Каталог'],     about:'Возрастной коммерческий типаж для банков, медицины и недвижимости. Ведёт мероприятия и снимается в имиджевой рекламе.'},
+  {id:13, name:'Инга Мартынова',   age:20, height:173, weight:54, bust:85, price:2500,  jobs:31,  verified:false, tags:['Промо','Fitness','Автосалон'],         about:'Начинающая модель с хорошей дисциплиной и быстрым откликом. Подходит для промо-смен и спортивных съёмок.'},
+  {id:14, name:'Рената Ольхова',   age:29, height:177, weight:60, bust:90, price:7500,  jobs:189, verified:true,  tags:['Хостес','Выставки','Ведущая'],         about:'Старшая по группе хостес: распределяет смены, брифует команду, закрывает форс-мажоры на площадке.'},
+  {id:15, name:'Таисия Лунёва',    age:24, height:169, weight:52, bust:83, price:4600,  jobs:107, verified:true,  tags:['Beauty','Фотосъёмка','Каталог'],       about:'Бьюти-съёмка, руки и украшения. Тонкая мимика, опыт работы с макро-планами и ювелирными брендами.'},
+  {id:16, name:'Ясмина Ковач',     age:26, height:184, weight:61, bust:88, price:9500,  jobs:158, verified:true,  tags:['Показы','Видеосъёмка','Выставки'],     about:'Опыт подиума за пределами региона. Открывающий и закрывающий выход на показах.'},
+  {id:17, name:'Агата Верещагина', age:35, height:167, weight:58, bust:88, price:6000,  jobs:167, verified:true,  tags:['Ведущая','Конференции','Каталог'],     about:'Экспертный типаж для B2B-контента: интервью, кейс-съёмки, ведение отраслевых секций.'},
+  {id:18, name:'Юна Савельева',    age:21, height:175, weight:55, bust:86, price:3600,  jobs:61,  verified:false, tags:['Промо','Фотосъёмка','Beauty'],         about:'Живая мимика и яркая внешность — хорошо работает в контентных съёмках для соцсетей.'},
+  {id:19, name:'Злата Березина',   age:33, height:172, weight:57, bust:87, price:10000, jobs:231, verified:true,  tags:['Ведущая','Конференции','Выставки'],    about:'Ведущая крупных корпоративных событий и премий. Опыт работы в паре с соведущим.'},
+  {id:20, name:'Диана Асташова',   age:22, height:181, weight:57, bust:84, price:6800,  jobs:119, verified:true,  tags:['Показы','Каталог','Видеосъёмка'],      about:'Редакционный fashion-типаж с сильной графикой лица. Хорошо читается в чёрно-белой съёмке.'}
+
+];
+/* ██  КОНЕЦ СПИСКА АНКЕТ  ██ */
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 6.1 · ОТЗЫВЫ, КОТОРЫЕ ВЫ ВПИСЫВАЕТЕ САМИ
+
+   Добавляются прямо в анкету полем reviews. Формат такой:
+
+     reviews:[
+       {who:'Кто написал', stars:5, text:'Текст отзыва.', date:'2026-05-14'}
+     ]
+
+     who    имя автора, в кавычках
+     stars  оценка от 1 до 5, просто число
+     text   сам отзыв, в кавычках
+     date   дата в виде ГОД-МЕСЯЦ-ДЕНЬ
+
+   Несколько отзывов разделяются запятой — смотрите анкету №1.
+   Такие отзывы удаляются только правкой этого файла.
+
+   Отзывы, которые посетители оставят через приложение, хранятся
+   отдельно и удаляются кнопкой «Удалить» (её видите только вы,
+   если вписали свой номер в ПУНКТ 8).
+
+   ВАЖНО: отзывы сохраняются на телефоне того, кто их написал.
+   Чтобы отзыв видели ВСЕ посетители, нужен сервер —
+   об этом написано в README, раздел «Про отзывы честно».
+   ══════════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 9 · ЗАЩИТА
+   Три функции, которые чистят данные перед показом на экране.
+   Не удаляйте их.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Обезвреживает текст: если кто-то впишет в отзыв программный код,
+   он покажется обычными буквами, а не выполнится. */
+function esc(v){
+  return String(v === null || v === undefined ? '' : v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+/* Превращает значение в число. Мусор заменяет запасным значением. */
+function num(v, fallback){ const n = Number(v); return Number.isFinite(n) ? n : (fallback || 0); }
+/* Пропускает только ссылки, начинающиеся с https:// */
+function safePhoto(u){
+  if(typeof u !== 'string') return '';
+  return /^https:\/\/[A-Za-z0-9._~:/?#\[\]@!$&'()*+,;=%-]+$/.test(u) ? u : '';
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   ПУНКТ 10 · РАБОТА ПРОГРАММЫ
+   Ниже менять ничего не нужно.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Сочные заливки для анкет без фото */
+const PAIRS = [
+  ['#C4B5FD','#7C3AED'],['#99F6E4','#0D9488'],['#FBCFE8','#DB2777'],['#BFDBFE','#2563EB'],
+  ['#FDE68A','#D97706'],['#BBF7D0','#16A34A'],['#FECACA','#DC2626'],['#DDD6FE','#4F46E5']
+];
+
+function cleanReview(r){
+  if(!r || typeof r !== 'object') return null;
+  const text = String(r.text || '').trim().slice(0, 700);
+  if(!text) return null;
+  return {
+    rid:   String(r.rid || ('f' + Math.random().toString(36).slice(2, 9))),
+    who:   String(r.who || 'Гость').trim().slice(0, 50) || 'Гость',
+    stars: Math.min(5, Math.max(1, Math.round(num(r.stars, 5)))),
+    text:  text,
+    date:  String(r.date || '').slice(0, 24)
+  };
+}
+
+const DATA = MODELS.map(function(m, i){
+  const p = PAIRS[i % PAIRS.length];
+  return {
+    id:       num(m.id, i + 1),
+    name:     String(m.name || 'Без имени').slice(0, 60),
+    age:      num(m.age, 18),
+    height:   num(m.height, 165),
+    weight:   num(m.weight, 55),
+    bust:     num(m.bust, 85),
+    price:    num(m.price, 0),
+    jobs:     num(m.jobs, 0),
+    verified: m.verified === true,
+    tags:     Array.isArray(m.tags)   ? m.tags.filter(function(t){ return TAGS.indexOf(t) !== -1; })     : [],
+    skills:   Array.isArray(m.skills) ? m.skills.filter(function(s){ return SKILLS.indexOf(s) !== -1; }) : [],
+    about:    String(m.about || '').slice(0, 700),
+    photo:    safePhoto(m.photo),
+    fileReviews: Array.isArray(m.reviews) ? m.reviews.map(cleanReview).filter(Boolean) : [],
+    c1: p[0], c2: p[1],
+    initials: String(m.name || '?').split(' ').map(function(w){ return w.charAt(0); }).join('').slice(0, 2)
+  };
+});
+
+/* ---- Telegram ---- */
+const TG = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+
+function haptic(s){
+  try{
+    if(!TG || !TG.HapticFeedback) return;
+    if(s === 'select') TG.HapticFeedback.selectionChanged();
+    else if(s === 'success' || s === 'error' || s === 'warning') TG.HapticFeedback.notificationOccurred(s);
+    else TG.HapticFeedback.impactOccurred(s || 'light');
+  }catch(e){}
+}
+
+/* Проверяем, вы это или обычный посетитель */
+const IS_ADMIN = (function(){
+  try{
+    const u = TG && TG.initDataUnsafe && TG.initDataUnsafe.user;
+    if(u && ADMIN_IDS.indexOf(u.id) !== -1) return true;
+    if(!TG || !TG.initData) return true;   /* открыто в браузере — можно всё проверить */
+  }catch(e){}
+  return false;
+})();
+
+/* ---- Хранилище: помнит выбор навсегда ---- */
+const Store = {
+  set:function(key, value){
+    const raw = JSON.stringify(value);
+    try{ localStorage.setItem('asta_' + key, raw); }catch(e){}
+    try{ TG && TG.CloudStorage && TG.CloudStorage.setItem(key, raw, function(){}); }catch(e){}
+  },
+  getLocal:function(key, fallback){
+    try{ const raw = localStorage.getItem('asta_' + key); if(raw) return JSON.parse(raw); }catch(e){}
+    return fallback;
+  },
+  get:function(key, fallback, cb){
+    cb(Store.getLocal(key, fallback));
+    try{
+      if(TG && TG.CloudStorage){
+        TG.CloudStorage.getItem(key, function(err, val){
+          if(err || !val) return;
+          try{ cb(JSON.parse(val), true); }catch(e){}
+        });
+      }
+    }catch(e){}
+  }
+};
+
+/* ---- Тема ---- */
+const THEME_BG = { light:'#F4F1FF', dark:'#0F0D1F' };
+const SUN  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.3A8.6 8.6 0 019.7 3.5a8.6 8.6 0 1010.8 10.8z"/></svg>';
+
+function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; }
+
+function applyTheme(t, save){
+  const theme = (t === 'dark') ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  const meta = document.getElementById('metaTheme');
+  if(meta) meta.setAttribute('content', THEME_BG[theme]);
+  const btn = document.getElementById('themeBtn');
+  if(btn){
+    btn.innerHTML = theme === 'dark' ? SUN : MOON;
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему');
+  }
+  try{ TG && TG.setHeaderColor && TG.setHeaderColor(THEME_BG[theme]); }catch(e){}
+  try{ TG && TG.setBackgroundColor && TG.setBackgroundColor(THEME_BG[theme]); }catch(e){}
+  if(save) Store.set('theme', theme);
+}
+
+/* ---- Состояние ---- */
+function freshFilters(){ return JSON.parse(JSON.stringify(DEFAULTS)); }
+
+const state = {
+  filters: freshFilters(), draft: freshFilters(),
+  query:'', favorites:[], bookings:[], favOnly:false,
+  activeId:null, drawerOpen:false, sheetOpen:false,
+  newStars:5
+};
+
+const reviewStore = {};   /* отзывы посетителей: id анкеты -> список */
+
+const $  = function(s){ return document.querySelector(s); };
+const $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+const money = function(n){ return num(n, 0).toLocaleString('ru-RU'); };
+
+function plural(n, one, few, many){
+  const x = n % 100, y = n % 10;
+  if(x > 10 && x < 20) return many;
+  if(y === 1) return one;
+  if(y >= 2 && y <= 4) return few;
+  return many;
+}
+
+/* ---- Отзывы ---- */
+function rvKey(id){ return 'reviews_' + id; }
+
+function loadAllReviews(){
+  DATA.forEach(function(m){
+    const arr = Store.getLocal(rvKey(m.id), []);
+    reviewStore[m.id] = Array.isArray(arr) ? arr.map(cleanReview).filter(Boolean) : [];
+  });
+}
+
+function allReviews(m){ return m.fileReviews.concat(reviewStore[m.id] || []); }
+
+function avgStars(m){
+  const list = allReviews(m);
+  if(!list.length) return null;
+  let s = 0;
+  for(let i = 0; i < list.length; i++) s += list[i].stars;
+  return s / list.length;
+}
+
+function starsHTML(n){
+  const full = Math.round(n);
+  let out = '';
+  for(let i = 1; i <= 5; i++) out += (i <= full ? '★' : '☆');
+  return out;
+}
+
+function niceDate(d){
+  if(!d) return '';
+  const t = new Date(d);
+  if(isNaN(t.getTime())) return esc(d);
+  return t.toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric' });
+}
+
+function tagClass(t){ return TAG_COLORS[t] || 't1'; }
+function skillClass(s){ return SKILL_COLORS[s] || 't3'; }
+
+/* ---- Фильтрация ---- */
+function matches(m, f){
+  if(state.favOnly && state.favorites.indexOf(m.id) === -1) return false;
+  const q = state.query.trim().toLowerCase();
+  if(q && m.name.toLowerCase().indexOf(q) === -1) return false;
+  if(m.age < f.ageMin || m.age > f.ageMax) return false;
+  if(m.height < f.hMin || m.height > f.hMax) return false;
+  if(m.price < f.pMin || m.price > f.pMax) return false;
+  for(let i = 0; i < f.tags.length; i++){ if(m.tags.indexOf(f.tags[i]) === -1) return false; }
+  for(let j = 0; j < f.skills.length; j++){ if(m.skills.indexOf(f.skills[j]) === -1) return false; }
+  return true;
+}
+
+function sortList(list, mode){
+  const out = list.slice();
+  if(mode === 'pa')      out.sort(function(a,b){ return a.price - b.price; });
+  else if(mode === 'pd') out.sort(function(a,b){ return b.price - a.price; });
+  else if(mode === 'height') out.sort(function(a,b){ return b.height - a.height; });
+  else if(mode === 'rating') out.sort(function(a,b){
+    const x = avgStars(a), y = avgStars(b);
+    if(x === null && y === null) return b.jobs - a.jobs;
+    if(x === null) return 1;
+    if(y === null) return -1;
+    return y - x || allReviews(b).length - allReviews(a).length;
+  });
+  else out.sort(function(a,b){ return b.jobs - a.jobs; });
+  return out;
+}
+
+function currentList(){ return sortList(DATA.filter(function(m){ return matches(m, state.filters); }), state.filters.sort); }
+function draftCount(){ return DATA.filter(function(m){ return matches(m, state.draft); }).length; }
+
+function activeFilterCount(){
+  const f = state.filters;
+  let n = 0;
+  if(f.ageMin !== DEFAULTS.ageMin || f.ageMax !== DEFAULTS.ageMax) n++;
+  if(f.hMin !== DEFAULTS.hMin || f.hMax !== DEFAULTS.hMax) n++;
+  if(f.pMin !== DEFAULTS.pMin || f.pMax !== DEFAULTS.pMax) n++;
+  return n + f.tags.length + f.skills.length;
+}
+
+/* ---- Отрисовка ---- */
+const grid = $('#grid');
+
+const BADGE =
+  '<svg viewBox="0 0 24 24">' +
+    '<circle cx="12" cy="12" r="11" fill="url(#vfGrad)"/>' +
+    '<ellipse cx="12" cy="8.6" rx="9.2" ry="6.6" fill="url(#vfGloss)"/>' +
+    '<path d="M6.9 12.4l3.5 3.5L17.2 9" fill="none" stroke="#fff" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>' +
+  '</svg>';
+const CHECK    = '<span class="vf" title="Проверено модератором">' + BADGE + '</span>';
+const CHECK_LG = '<span class="vf lg" title="Проверено модератором">' + BADGE + '</span>';
+
+function photoHTML(m){
+  if(m.photo) return '<img src="' + esc(m.photo) + '" alt="" loading="lazy" referrerpolicy="no-referrer">';
+  return '<div class="ph" style="--c1:' + esc(m.c1) + ';--c2:' + esc(m.c2) + '"><b>' + esc(m.initials) + '</b></div>';
+}
+
+function cardHTML(m, i){
+  const fav = state.favorites.indexOf(m.id) !== -1;
+  const tags = m.tags.slice(0, 2).map(function(t){
+    return '<span class="tag ' + tagClass(t) + '">' + esc(t) + '</span>';
+  }).join('');
+  return '' +
+  '<article class="card" data-id="' + esc(m.id) + '" style="animation-delay:' + Math.min(i * 26, 320) + 'ms">' +
+    '<div class="media">' + photoHTML(m) + '<div class="veil"></div>' +
+      '<button class="fav' + (fav ? ' on' : '') + '" data-fav="' + esc(m.id) + '" aria-label="В избранное">' +
+        '<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 000-7.8z"/></svg>' +
+      '</button>' +
+      '<div class="ident">' +
+        '<div class="nm"><h3>' + esc(m.name) + '</h3>' + (m.verified ? CHECK : '') + '</div>' +
+        '<div class="price">' + money(m.price) + ' ₽ <span>/ час</span></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="body">' +
+      '<div class="spec">' +
+        '<span>' + m.age + '<s> ' + plural(m.age,'год','года','лет') + '</s></span>' +
+        '<span>' + m.height + '<s> см</s></span>' +
+        '<span>' + m.weight + '<s> кг</s></span>' +
+        '<span>' + m.bust + '<s> грудь</s></span>' +
+      '</div>' +
+      '<div class="tags">' + tags + '</div>' +
+    '</div>' +
+  '</article>';
+}
+
+function render(){
+  const list = currentList();
+  grid.innerHTML = list.length ? list.map(cardHTML).join('') :
+    '<div class="empty"><div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg></div>' +
+    '<h4>' + esc(TEXT.emptyTitle) + '</h4><p>' + esc(TEXT.emptyText) + '</p>' +
+    '<button id="emptyReset">Сбросить фильтры</button></div>';
+
+  $('#resTitle').textContent = state.favOnly ? 'Избранное' : 'Каталог';
+  $('#resCount').textContent = list.length ? list.length + ' из ' + DATA.length : '0';
+
+  const n = activeFilterCount();
+  $('#fbadge').hidden = n === 0;
+  $('#fbadge').textContent = n;
+  $('#resetTop').hidden = n === 0 && !state.query && !state.favOnly;
+
+  $('#favCount').hidden = state.favorites.length === 0;
+  $('#favCount').textContent = state.favorites.length;
+  $('#bookCount').hidden = state.bookings.length === 0;
+  $('#bookCount').textContent = state.bookings.length;
+  $('#favBtn').classList.toggle('on', state.favOnly);
+
+  $('#chips').innerHTML = QUICK_TAGS.filter(function(t){ return TAGS.indexOf(t) !== -1; }).map(function(t){
+    const on = state.filters.tags.indexOf(t) !== -1;
+    return '<button class="chip' + (on ? ' on' : '') + '" data-chip="' + esc(t) + '">' + esc(t) + '</button>';
+  }).join('');
+}
+
+/* ---- Ползунки ---- */
+function bindRange(minId, maxId, fillId, outId, format, gap, onChange){
+  const a = $(minId), b = $(maxId), fill = $(fillId), out = $(outId);
+  const lo = num(a.min, 0), hi = num(a.max, 100), g = gap || 1;
+  function paint(){
+    const va = num(a.value, lo), vb = num(b.value, hi);
+    fill.style.left  = ((va - lo) / (hi - lo) * 100) + '%';
+    fill.style.width = Math.max(0, (vb - va) / (hi - lo) * 100) + '%';
+    out.textContent = format(va, vb);
+  }
+  function clamp(who){
+    let va = num(a.value, lo), vb = num(b.value, hi);
+    if(va > vb - g){
+      if(who === 'a'){ va = Math.min(va, hi - g); vb = va + g; }
+      else { vb = Math.max(vb, lo + g); va = vb - g; }
+      a.value = va; b.value = vb;
+    }
+    paint();
+    onChange(num(a.value, lo), num(b.value, hi));
+  }
+  a.addEventListener('input', function(){ clamp('a'); haptic('select'); });
+  b.addEventListener('input', function(){ clamp('b'); haptic('select'); });
+  paint();
+  return { set:function(va, vb){ a.value = va; b.value = vb; paint(); } };
+}
+
+const ageRange = bindRange('#ageMin','#ageMax','#ageFill','#ageOut', function(x,y){ return x + ' – ' + y + ' лет'; }, 1,
+  function(x,y){ state.draft.ageMin = x; state.draft.ageMax = y; refreshApply(); });
+const hRange = bindRange('#hMin','#hMax','#hFill','#hOut', function(x,y){ return x + ' – ' + y + ' см'; }, 1,
+  function(x,y){ state.draft.hMin = x; state.draft.hMax = y; refreshApply(); });
+const pRange = bindRange('#pMin','#pMax','#pFill','#pOut', function(x,y){ return money(x) + ' – ' + money(y) + ' ₽'; }, 500,
+  function(x,y){ state.draft.pMin = x; state.draft.pMax = y; refreshApply(); });
+
+$('#fTags').innerHTML   = TAGS.map(function(t){   return '<button class="tg" data-tg="' + esc(t) + '">' + esc(t) + '</button>'; }).join('');
+$('#fSkills').innerHTML = SKILLS.map(function(s){ return '<button class="tg" data-sk="' + esc(s) + '">' + esc(s) + '</button>'; }).join('');
+
+function refreshApply(){ $('#applyN').textContent = draftCount(); }
+
+function syncDraftToUI(){
+  const d = state.draft;
+  ageRange.set(d.ageMin, d.ageMax);
+  hRange.set(d.hMin, d.hMax);
+  pRange.set(d.pMin, d.pMax);
+  $('#fSort').value = d.sort;
+  $$('#fTags .tg').forEach(function(el){   el.classList.toggle('on', d.tags.indexOf(el.dataset.tg) !== -1); });
+  $$('#fSkills .tg').forEach(function(el){ el.classList.toggle('on', d.skills.indexOf(el.dataset.sk) !== -1); });
+  refreshApply();
+}
+
+$('#fSort').addEventListener('change', function(e){ state.draft.sort = e.target.value; haptic('select'); refreshApply(); });
+
+function bindToggleGroup(sel, attr, key){
+  $(sel).addEventListener('click', function(e){
+    const b = e.target.closest('[' + attr + ']');
+    if(!b) return;
+    const v = b.getAttribute(attr);
+    const i = state.draft[key].indexOf(v);
+    if(i === -1) state.draft[key].push(v); else state.draft[key].splice(i, 1);
+    b.classList.toggle('on'); haptic('light'); refreshApply();
+  });
+}
+bindToggleGroup('#fTags','data-tg','tags');
+bindToggleGroup('#fSkills','data-sk','skills');
+
+/* ---- Панели ---- */
+function openDrawer(){
+  state.draft = JSON.parse(JSON.stringify(state.filters));
+  syncDraftToUI();
+  state.drawerOpen = true;
+  $('#drawer').classList.add('on'); $('#scrim').classList.add('on');
+  document.body.classList.add('locked'); syncBackButton(); haptic('medium');
+}
+function closeDrawer(){
+  state.drawerOpen = false;
+  $('#drawer').classList.remove('on');
+  if(!state.sheetOpen){ $('#scrim').classList.remove('on'); document.body.classList.remove('locked'); }
+  syncBackButton();
+}
+$('#openFilters').addEventListener('click', openDrawer);
+$('#closeFilters').addEventListener('click', function(){ closeDrawer(); haptic('light'); });
+
+$('#applyFilters').addEventListener('click', function(){
+  state.filters = JSON.parse(JSON.stringify(state.draft));
+  closeDrawer(); render(); haptic('success');
+  const n = currentList().length;
+  toast(n ? 'Показано ' + n + ' ' + plural(n,'анкета','анкеты','анкет') : 'Под условия никто не подошёл');
+});
+
+function resetAll(){
+  state.filters = freshFilters(); state.draft = freshFilters();
+  state.query = ''; state.favOnly = false;
+  $('#q').value = ''; $('#searchWrap').classList.remove('filled');
+  syncDraftToUI(); render(); haptic('warning');
+}
+$('#resetFilters').addEventListener('click', function(){ state.draft = freshFilters(); syncDraftToUI(); haptic('warning'); });
+$('#resetTop').addEventListener('click', resetAll);
+$('#scrim').addEventListener('click', function(){ state.sheetOpen ? closeSheet() : (state.drawerOpen && closeDrawer()); });
+
+/* ---- Поиск ---- */
+let searchTimer = null;
+$('#q').addEventListener('input', function(e){
+  const v = e.target.value;
+  $('#searchWrap').classList.toggle('filled', v.length > 0);
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(function(){ state.query = v; render(); }, 140);
+});
+$('#clrBtn').addEventListener('click', function(){
+  $('#q').value = ''; $('#searchWrap').classList.remove('filled');
+  state.query = ''; render(); haptic('light');
+});
+
+/* ---- Клики ---- */
+grid.addEventListener('click', function(e){
+  const favBtn = e.target.closest('[data-fav]');
+  if(favBtn){ e.stopPropagation(); toggleFav(num(favBtn.dataset.fav, 0)); render(); return; }
+  if(e.target.closest('#emptyReset')){ resetAll(); return; }
+  const card = e.target.closest('[data-id]');
+  if(card) openSheet(num(card.dataset.id, 0));
+});
+
+$('#chips').addEventListener('click', function(e){
+  const c = e.target.closest('[data-chip]');
+  if(!c) return;
+  const t = c.getAttribute('data-chip');
+  const i = state.filters.tags.indexOf(t);
+  if(i === -1) state.filters.tags.push(t); else state.filters.tags.splice(i, 1);
+  haptic('light'); render();
+});
+
+$('#themeBtn').addEventListener('click', function(){
+  applyTheme(currentTheme() === 'dark' ? 'light' : 'dark', true);
+  haptic('light');
+});
+
+$('#favBtn').addEventListener('click', function(){ state.favOnly = !state.favOnly; haptic('medium'); render(); });
+
+$('#cartBtn').addEventListener('click', function(){
+  haptic('medium');
+  if(!state.bookings.length){ toast('Заявок пока нет — откройте анкету и отправьте бронь'); return; }
+  const text = 'Ваши заявки (' + state.bookings.length + '):\n' +
+    state.bookings.map(function(b){ return '• ' + b.name + ' — ' + money(b.price) + ' ₽/час'; }).join('\n');
+  if(TG && TG.showPopup){
+    try{
+      TG.showPopup({ title:'Мои заявки', message:text, buttons:[{id:'clear',type:'destructive',text:'Очистить'},{type:'cancel'}] },
+        function(id){ if(id === 'clear'){ state.bookings = []; Store.set('bookings', state.bookings); render(); toast('Список заявок очищен'); } });
+      return;
+    }catch(e){}
+  }
+  toast(text);
+});
+
+function toggleFav(id){
+  const i = state.favorites.indexOf(id);
+  if(i === -1){ state.favorites.push(id); haptic('success'); }
+  else { state.favorites.splice(i, 1); haptic('light'); }
+  Store.set('favorites', state.favorites);      /* ← сохраняется навсегда */
+}
+
+/* ---- Профиль ---- */
+function reviewsHTML(m){
+  const list = allReviews(m).slice().reverse();
+  const avg = avgStars(m);
+
+  let head = '';
+  if(avg !== null){
+    head =
+      '<div class="rv-top">' +
+        '<div class="rv-score">' + avg.toFixed(1) + '</div>' +
+        '<div><div class="rv-stars">' + starsHTML(avg) + '</div>' +
+        '<div class="rv-cnt">' + list.length + ' ' + plural(list.length,'отзыв','отзыва','отзывов') + '</div></div>' +
+      '</div>';
+  }
+
+  const items = list.length
+    ? list.map(function(r){
+        const canDel = IS_ADMIN && r.rid.charAt(0) !== 'f';
+        return '<div class="rv">' +
+          '<div class="h"><span class="who">' + esc(r.who) + '</span>' +
+          '<span class="st">' + starsHTML(r.stars) + '</span>' +
+          '<span class="dt">' + esc(niceDate(r.date)) + '</span></div>' +
+          '<div class="tx">' + esc(r.text) + '</div>' +
+          (canDel ? '<button class="del" data-del="' + esc(r.rid) + '">Удалить</button>' : '') +
+        '</div>';
+      }).join('')
+    : '<div class="rv-empty">' + esc(TEXT.noReviews) + '</div>';
+
+  let picker = '';
+  for(let i = 1; i <= 5; i++){
+    picker += '<button data-star="' + i + '" class="' + (i <= state.newStars ? 'on' : '') + '" aria-label="' + i + '">★</button>';
+  }
+
+  const form =
+    '<div class="rv-form">' +
+      '<h6>Оставить отзыв</h6>' +
+      '<div class="rv-pick" id="rvPick">' + picker + '</div>' +
+      '<input id="rvWho" type="text" maxlength="50" placeholder="Ваше имя или студия">' +
+      '<textarea id="rvText" maxlength="700" placeholder="Как прошла работа?"></textarea>' +
+      '<button class="rv-send" id="rvSend">Отправить отзыв</button>' +
+    '</div>';
+
+  return '<div class="sec"><h5>Отзывы</h5>' + head + items + form + '</div>';
+}
+
+function sheetHTML(m){
+  const skillsBlock = m.skills.length
+    ? '<div class="sec"><h5>Мастерство</h5><div class="tags">' +
+      m.skills.map(function(s){ return '<span class="tag ' + skillClass(s) + '">' + esc(s) + '</span>'; }).join('') +
+      '</div></div>' : '';
+
+  return '' +
+  '<div class="hero">' + photoHTML(m) + '<div class="veil"></div>' +
+    '<div class="name">' +
+      '<div class="nm"><h2>' + esc(m.name) + '</h2>' + (m.verified ? CHECK_LG : '') + '</div>' +
+      '<div class="row"><span>' + m.jobs + ' ' + plural(m.jobs,'проект','проекта','проектов') + '</span>' +
+      (m.verified ? '<span>·</span><span>Проверена модератором</span>' : '') + '</div>' +
+    '</div>' +
+  '</div>' +
+
+  '<div class="sec"><h5>Данные</h5><div class="card-spec">' +
+    '<div><b>' + m.age + '</b><s>возраст</s></div>' +
+    '<div><b>' + m.height + '</b><s>рост, см</s></div>' +
+    '<div><b>' + m.weight + '</b><s>вес, кг</s></div>' +
+    '<div><b>' + m.bust + '</b><s>грудь</s></div>' +
+  '</div></div>' +
+
+  '<div class="sec"><h5>Специализация</h5><div class="tags">' +
+    m.tags.map(function(t){ return '<span class="tag ' + tagClass(t) + '">' + esc(t) + '</span>'; }).join('') +
+  '</div></div>' +
+
+  skillsBlock +
+
+  '<div class="sec"><h5>О профиле</h5><p class="about">' + esc(m.about) + '</p></div>' +
+
+  '<div class="priceline">' +
+    '<div><s>ставка</s><div class="big">' + money(m.price) + ' ₽</div></div>' +
+    '<div class="min">за час<br>' + esc(TEXT.minShift) + '</div>' +
+  '</div>' +
+
+  reviewsHTML(m) +
+  '<div style="height:26px"></div>';
+}
+
+function findModel(id){
+  for(let i = 0; i < DATA.length; i++){ if(DATA[i].id === id) return DATA[i]; }
+  return null;
+}
+
+function refreshReviewBlock(){
+  const m = findModel(state.activeId);
+  if(!m || !state.sheetOpen) return;
+  const box = $('#sheetBody');
+  const keep = box.scrollTop;
+  box.innerHTML = sheetHTML(m);
+  box.scrollTop = keep;
+}
+
+function openSheet(id){
+  const m = findModel(id);
+  if(!m) return;
+  state.activeId = id;
+  state.sheetOpen = true;
+  state.newStars = 5;
+  $('#sheetBody').innerHTML = sheetHTML(m);
+  $('#sheetBody').scrollTop = 0;
+  updateSheetFavLabel();
+  $('#sheet').classList.add('on'); $('#scrim').classList.add('on');
+  document.body.classList.add('locked');
+  syncBackButton();
+  mainButton(true, 'Забронировать · ' + money(m.price) + ' ₽/час', function(){ book(m); });
+  haptic('medium');
+
+  /* Догружаем отзывы из облака Telegram */
+  Store.get(rvKey(id), reviewStore[id] || [], function(v, fromCloud){
+    if(!fromCloud || !Array.isArray(v)) return;
+    reviewStore[id] = v.map(cleanReview).filter(Boolean);
+    refreshReviewBlock();
+  });
+}
+
+function closeSheet(){
+  state.sheetOpen = false; state.activeId = null;
+  $('#sheet').classList.remove('on');
+  if(!state.drawerOpen){ $('#scrim').classList.remove('on'); document.body.classList.remove('locked'); }
+  mainButton(false); syncBackButton();
+}
+$('#closeSheet').addEventListener('click', function(){ closeSheet(); haptic('light'); });
+
+/* Все клики внутри профиля */
+$('#sheetBody').addEventListener('click', function(e){
+  const star = e.target.closest('[data-star]');
+  if(star){
+    state.newStars = num(star.getAttribute('data-star'), 5);
+    $$('#rvPick button').forEach(function(b){
+      b.classList.toggle('on', num(b.getAttribute('data-star'), 0) <= state.newStars);
+    });
+    haptic('light');
+    return;
+  }
+  if(e.target.closest('#rvSend')){ sendReview(); return; }
+  const del = e.target.closest('[data-del]');
+  if(del){ deleteReview(del.getAttribute('data-del')); return; }
+});
+
+function sendReview(){
+  const m = findModel(state.activeId);
+  if(!m) return;
+  const who  = ($('#rvWho')  ? $('#rvWho').value  : '').trim();
+  const text = ($('#rvText') ? $('#rvText').value : '').trim();
+
+  if(text.length < 3){ toast('Напишите пару слов об отзыве'); haptic('error'); return; }
+
+  const item = cleanReview({
+    rid:  'u' + Date.now() + Math.random().toString(36).slice(2, 6),
+    who:  who || 'Гость',
+    stars: state.newStars,
+    text: text,
+    date: new Date().toISOString().slice(0, 10)
+  });
+  if(!item) return;
+
+  const list = (reviewStore[m.id] || []).slice();
+  list.push(item);
+  if(list.length > 100) list.shift();
+  reviewStore[m.id] = list;
+  Store.set(rvKey(m.id), list);          /* ← сохраняется навсегда */
+
+  state.newStars = 5;
+  refreshReviewBlock();
+  render();
+  haptic('success');
+  toast('Спасибо! Отзыв добавлен');
+}
+
+function deleteReview(rid){
+  const m = findModel(state.activeId);
+  if(!m || !IS_ADMIN) return;
+  const doIt = function(){
+    reviewStore[m.id] = (reviewStore[m.id] || []).filter(function(r){ return r.rid !== rid; });
+    Store.set(rvKey(m.id), reviewStore[m.id]);
+    refreshReviewBlock(); render(); haptic('warning'); toast('Отзыв удалён');
+  };
+  if(TG && TG.showConfirm){
+    try{ TG.showConfirm('Удалить этот отзыв?', function(ok){ if(ok) doIt(); }); return; }catch(e){}
+  }
+  if(window.confirm('Удалить этот отзыв?')) doIt();
+}
+
+function updateSheetFavLabel(){
+  const on = state.favorites.indexOf(state.activeId) !== -1;
+  $('#sheetFav').textContent = on ? 'В избранном' : 'В избранное';
+}
+$('#sheetFav').addEventListener('click', function(){
+  if(!state.activeId) return;
+  toggleFav(state.activeId); updateSheetFavLabel(); render();
+});
+$('#sheetBook').addEventListener('click', function(){
+  const m = findModel(state.activeId);
+  if(m) book(m);
+});
+
+function book(m){
+  haptic('success');
+  if(!state.bookings.some(function(b){ return b.id === m.id; })){
+    state.bookings.push({ id:m.id, name:m.name, price:m.price });
+    Store.set('bookings', state.bookings);
+  }
+  render();
+  try{
+    if(TG && typeof TG.sendData === 'function' && TG.initData){
+      TG.sendData(JSON.stringify({ action:'booking_request', modelId:m.id, ts:Date.now() }));
+      return;
+    }
+  }catch(e){}
+  const msg = m.name + ' — ' + money(m.price) + ' ₽/час.\n' + TEXT.bookedMsg;
+  if(TG && TG.showPopup){
+    try{ TG.showPopup({ title:'Заявка отправлена', message:msg, buttons:[{type:'ok'}] }); return; }catch(e){}
+  }
+  toast('Заявка отправлена: ' + m.name);
+}
+
+/* ---- Кнопки Telegram ---- */
+function syncBackButton(){
+  if(!TG || !TG.BackButton) return;
+  try{ (state.drawerOpen || state.sheetOpen) ? TG.BackButton.show() : TG.BackButton.hide(); }catch(e){}
+}
+function mainButton(show, text, cb){
+  if(!TG || !TG.MainButton) return;
+  try{
+    if(mainButton._cb){ TG.MainButton.offClick(mainButton._cb); mainButton._cb = null; }
+    if(!show){ TG.MainButton.hide(); return; }
+    mainButton._cb = cb;
+    TG.MainButton.setParams({ text:text, color:'#EC4899', text_color:'#FFFFFF', is_active:true, is_visible:true });
+    TG.MainButton.onClick(cb);
+  }catch(e){}
+}
+function onBack(){ if(state.sheetOpen) closeSheet(); else if(state.drawerOpen) closeDrawer(); }
+function applyInsets(){
+  let top = 0, bottom = 0;
+  if(TG){
+    const sa = TG.safeAreaInset || {}, ca = TG.contentSafeAreaInset || {};
+    top = Math.max(num(sa.top,0), num(ca.top,0));
+    bottom = num(sa.bottom,0);
+  }
+  document.documentElement.style.setProperty('--safe-top', top + 'px');
+  document.documentElement.style.setProperty('--safe-bottom', bottom + 'px');
+}
+
+let toastTimer = null;
+function toast(text){
+  const t = $('#toast');
+  t.textContent = text;
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove('on'); }, 2600);
+}
+
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') onBack(); });
+
+/* ---- Запуск ---- */
+function boot(){
+  if(TG){
+    try{ TG.ready(); }catch(e){}
+    try{ TG.expand(); }catch(e){}
+    try{ TG.disableVerticalSwipes && TG.disableVerticalSwipes(); }catch(e){}
+    try{ TG.enableClosingConfirmation && TG.enableClosingConfirmation(); }catch(e){}
+    applyInsets();
+    try{
+      TG.onEvent('viewportChanged', applyInsets);
+      TG.onEvent('safeAreaChanged', applyInsets);
+      TG.onEvent('contentSafeAreaChanged', applyInsets);
+      TG.onEvent('backButtonClicked', onBack);
+    }catch(e){}
+  }
+
+  applyTheme(Store.getLocal('theme', 'light'), false);
+  Store.get('theme', 'light', function(v, fromCloud){ if(fromCloud) applyTheme(v, false); });
+
+  loadAllReviews();
+
+  grid.innerHTML = Array(6).fill(0).map(function(){
+    return '<div class="skel"><div class="m"></div><div class="l"></div><div class="l" style="width:60%"></div></div>';
+  }).join('');
+
+  Store.get('favorites', [], function(v){ if(Array.isArray(v)) state.favorites = v.map(function(x){ return num(x,0); }); render(); });
+  Store.get('bookings',  [], function(v){ if(Array.isArray(v)) state.bookings  = v.filter(function(x){ return x && typeof x === 'object'; }); render(); });
+
+  setTimeout(function(){ syncDraftToUI(); render(); }, 380);
+}
+
+boot();
+</script>
+</body>
+</html>
